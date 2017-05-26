@@ -1,0 +1,40 @@
+body {
+  background-color: #2215ED;
+  height: 100%
+}
+
+.map-outer {
+  height: 100%;
+  padding: 20px;
+  border: 2px solid #2215ED;
+  margin-bottom: 20px;
+  background-color: #fff
+}
+
+.map-container {
+  height: 480px
+}
+
+.titlebar {
+  padding: 20px;
+  border: 2px solid #2215ED;
+  background-color: #29ED15;
+  color: white
+}
+
+.search-field {
+  color: black;
+}
+.loc-list
+{
+  color: #2215ED;
+}
+
+button {
+  margin: 0;
+  padding: 0;
+  height: 40px;
+  width: 100%;
+  vertical-align: middle
+
+}
