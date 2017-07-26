@@ -1,5 +1,8 @@
+/*global window:true,console :true, ko: true*/
+var markersModel,mapdata;
+var i;
 "use strict";
-
+var markersModel,mapdata;
 //Error handling - checks if Google Maps has loaded
 if (!window.google || !window.google.maps){
   $('#map-container').text('Error: Google Maps data could not be loaded');
@@ -9,22 +12,12 @@ if (!window.google || !window.google.maps){
 // --------- MODEL ---------------
 
 var markersModel = [
-  {
-    title: "Chutneys",
-    category: "restaurant",                         // category for search field
-    address: "Chutneys ,Food Court, Level 4, Inorbit Mall, Hyderabad, Telangana 500051", // street address for use by Google Maps geocoder
-    
-    phone: "(+91) 040 4488 0000",                         
-    status: ko.observable("OK"),                    // change status if error message received from 
-    marker: new google.maps.Marker({               // google maps marker object
-      position: new google.maps.LatLng(0,0),          // set initial position to (0,0)
-      icon: "img/restaurant.png"                 // category icon for map pin
-    })
-  },
-  {
+ {
     title: "Cafe Coffee Day ",
     category: "coffee",
+
     address: "Cafe Coffee Day ,Raheja Mind Space, Madhapur, Hyderabad, Telangana 500081",
+    id:"96344",
     phone: "(+91) 9391415714",
     status: ko.observable("OK"),
     marker: new google.maps.Marker({
@@ -33,9 +26,10 @@ var markersModel = [
     })
   },
   {
-    title: "Starbucks",
+    title: "Here's What's Cookin'",
     category: "coffee",
-    address: "Starbucks ,Building 9, Ground Floor, Mindspace, HUDA Techno Enclave, HITEC City, Hyderabad, Telangana 500081",
+    address: "Here's What's Cookin' ,1-120/3, Hitech City Road, HUDA Techno Enclave, Near Indian Bank, Hyderabad, Telangana 500081",
+    id:"18415598",
     phone: "(+91) 077998 00994",
     status: ko.observable("OK"),
     marker: new google.maps.Marker({
@@ -44,9 +38,10 @@ var markersModel = [
     })
   },
   {
-    title: "Swaad Restaurant",
+    title: "Real South",
     category: "restaurant",
-    address: "Swaad Restaurant ,Plot No:70, Arunodaya Colony, Madhapur, VIP Hills, Jaihind Enclave, Madhapur, Hyderabad, Telangana 500081",
+    address: "VittalRao Nagar, Madhapur, 500081 Hyderabad, 1-90/5/86, Hyderabad, Telangana 500081",
+    id: "18313017",
     phone: "(+91)  093467 26039",
     status: ko.observable("OK"),
     marker : new google.maps.Marker({
@@ -55,9 +50,10 @@ var markersModel = [
     })
   },
   {
-    title: "Kangan",
+    title: "Delhi Wala Sweets",
     category: "restaurant",
-    address: "Kangan ,Survey No.64, HUDA Techno Enclave, Raheja IT Park, Hitech City, Madhapur, HUDA Techno Enclave, HITEC City, Hyderabad, Telangana 500081",
+    address: "Delhi Wala Sweets, 90/2/1/C, Madhapur, Hyderabad, Telangana 500081",
+    id:"92867",
     phone: "(+91) 040 6767 6838",
     status: ko.observable("OK"),
     marker : new google.maps.Marker({
@@ -66,9 +62,10 @@ var markersModel = [
     })
   },
   {
-    title: "Cafe' Reboot - Bar & Kitchen",
+    title: "Turning 21",
     category: "pub",
-    address: "Cafe' Reboot - Bar & Kitchen, PLOT 11/2, SECTOR 1, Huda Techno Eclave., Behind Pride Honda, Madhapur, Hyderabad, Telangana 500081",
+    address: " HUDA Techno Enclave, HITEC City, Hyderabad, Telangana 500081",
+    id:"18423550",
     phone: "(+91) 283-4548",
     status: ko.observable("OK"),
     marker : new google.maps.Marker({
@@ -78,9 +75,10 @@ var markersModel = [
   },
   
   {
-    title: "Beer House",
+    title: "Social Monkey",
     category: "pub",
-    address: "Beer House ,L2, Inorbit Mall Road, Madhapur, Hitech City, Telangana 500081",
+    address: "1-140/2&3, Opposite Raheja Mind Space, Sector 3, Hitech City, Hyderabad, Telangana 500081",
+    id:"18402120",
     phone: "(+91) 082972 99665",
     status: ko.observable("OK"),
     marker : new google.maps.Marker({
@@ -89,9 +87,10 @@ var markersModel = [
     })
   },
   {
-    title: "Westin Hyderabad Mindspace",
+    title: "Blanc Glace",
     category: "restaurant",
-    address: " Raheja IT Park, Mindspace, HUDA Techno Enclave, HITEC City, Hyderabad, Telangana 500081",
+    address: " Blanc Glace, Raheja IT Park, Mindspace, HUDA Techno Enclave, HITEC City, Hyderabad, Telangana 500081",
+    id:"18313002",
     phone: "(+91) 040 6767 6767",
     status: ko.observable("OK"),
     
@@ -101,9 +100,10 @@ var markersModel = [
     })
   },
   {
-    title: "Reliance Fresh",
+    title: "Pavs & Potatoes",
     category: "grocery",
-    address: "Reliance Fresh ,Vittal Rao Nagar Rd, Vittal Rao Nagar, HITEC City, Hyderabad, Telangana 500081",
+    address: "Ratnadeep Super Market, Hitech City, Hyderabad, Telangana 500081",
+    id:"18461452",
     phone: "(+91) 040 6463 7805",
     status: ko.observable("OK"),
     marker : new google.maps.Marker({
@@ -112,9 +112,10 @@ var markersModel = [
     })
   },
   {
-    title: 'Heritage Fresh',
+    title: "Hunger Sutra",
     category: "grocery",
-    address: "Heritage Fresh ,Vittal Rao Nagar Rd, Vittal Rao Nagar, HITEC City, Hyderabad, Telangana 500081",
+    address: "Hunger Sutra, Ayyappa Society Main Road, Madhapur, Hyderabad, Telangana",
+    id:"18172966",
     phone:"(+91) 040 4424 9590",
     status: ko.observable("OK"),
     marker : new google.maps.Marker({
@@ -130,7 +131,7 @@ var resultMarkers = function(members){
 
   self.mapOptions = {
     center: new google.maps.LatLng(17.4422926,78.384979), //set map center in Mindspace
-    zoom: 16
+    zoom: 15	
   };
 
   var mapCont = document.getElementsByClassName('map-container');
@@ -145,7 +146,7 @@ var resultMarkers = function(members){
   self.filteredMarkers = ko.computed(function() {
     //Remove all markers from map
     var len = members.length;
-    for (var i = 0; i < len; i++) {
+    for (i = 0; i < len; i++) {
       members[i].marker.setMap(null);
       clearTimeout(members[i].timer);
     }
@@ -157,13 +158,15 @@ var resultMarkers = function(members){
       return ((titleSearch > -1 || catSearch > -1) && a.status() === 'OK');
     });
     //Iterate thru results, set animation timeout for each
-    var len = arrayResults.length;
-    for (var i = 0; i < len; i++){
-      (function f(){
-        var current = i;
-        var animTimer = setTimeout(function(){arrayResults[current].marker.setMap(self.map);}, i * 300);
+   var newf = function f(i){
+        let current = i;
+        let animTimer = setTimeout(function(){arrayResults[current].marker.setMap(self.map);}, i * 300);
         arrayResults[current].timer = animTimer;
-      }());
+      };
+    len = arrayResults.length;
+    for (let i = 0; i < len; i++){
+      
+      newf(i);
     }
     //Return list of locations that match search request, for button list
     return arrayResults;
@@ -206,11 +209,36 @@ var resultMarkers = function(members){
 
         //Can you clarify the following code review comment on this segment?
         //"This text template is one part of View so you can move it into index.html."
-        var contentString =
-                            "<h5>" + members[index].title +"</h5>" +
+		//Using ZOMATO to retrive data
+
+
+        $.ajax({
+                url: "https://developers.zomato.com/api/v2.1/restaurant?res_id="+members[index].id,
+                method: 'GET',
+                headers: {'user-key':'c83208b6cd1aec305db999601cef0adb'},
+                success: function(data) {
+                    mapdata = data;
+
+                }
+            });
+		var contentString="";
+		//if data is not retrived
+		if(mapdata==null)
+		{
+			contentString="Data couldn't retrive from Source";
+		}
+		else
+		{
+			members[index].name = mapdata.name;
+			members[index].address = mapdata. location.address;
+			members[index].phone = mapdata.cuisines; 
+			contentString =
+                            "<h5>" + members[index].name +"</h5>" +
                             "<p>" + members[index].address + "</p>" +
                             "<p>" + members[index].phone + "</p>" 
                             ;
+		}
+        
         self.infowindow.setContent(contentString);
       
 
